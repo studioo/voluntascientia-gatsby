@@ -3,7 +3,6 @@ import { Link } from 'gatsby'
 
 import { rhythm, scale } from '../utils/typography'
 import { fonts } from '../styles/fonts.css';
-import { red } from 'ansi-colors';
 
 class Layout extends React.Component {
   render() {
