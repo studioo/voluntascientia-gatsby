@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'gatsby'
 
 import { rhythm, scale } from '../utils/typography'
+import { fonts } from '../styles/fonts.css';
+import { red } from 'ansi-colors';
 
 class Layout extends React.Component {
   render() {
@@ -37,6 +39,7 @@ class Layout extends React.Component {
             fontFamily: `Montserrat, sans-serif`,
             marginTop: 0,
             marginBottom: rhythm(-1),
+            color: '#81c256'
           }}
         >
           <Link
