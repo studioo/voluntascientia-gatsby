@@ -5,8 +5,8 @@ Wordpress2016.overrideThemeStyles = ({ rhythm }, options) => ({
   'a.gatsby-resp-image-link': {
     boxShadow: `none`,
   },
-  'h3 > a': {
-    color: '#81c256'
+  'a': {
+    color: '#62a835'
   }
 })
 

@@ -3,15 +3,19 @@ import { Link, graphql } from 'gatsby'
 
 import Bio from '../components/Bio'
 import Layout from '../components/Layout'
-import SEO from '../components/seo'
+import SEO from '../components/Seo'
 import { rhythm, scale } from '../utils/typography'
 import { formatReadingTime } from '../utils/helpers'
+
+const GITHUB_USERNAME = 'studioo'
+const GITHUB_REPO_NAME = 'voluntascientia-gatsby'
 
 class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.markdownRemark
     const siteTitle = this.props.data.site.siteMetadata.title
-    const { previous, next } = this.props.pageContext
+    const { previous, next, slug } = this.props.pageContext
+    const editUrl = `https://github.com/${GITHUB_USERNAME}/${GITHUB_REPO_NAME}/edit/master/content/blog/${slug.replace(/\//g, '')}/index.md`
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
@@ -29,6 +33,15 @@ class BlogPostTemplate extends React.Component {
           {` • ${formatReadingTime(post.timeToRead)}`}
         </p>
         <div dangerouslySetInnerHTML={{ __html: post.html }} />
+        <p>
+          <a
+            href={editUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Edit on GitHub
+          </a>
+        </p>
         <hr
           style={{
             marginBottom: rhythm(1),
