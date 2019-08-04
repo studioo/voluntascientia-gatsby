@@ -1,11 +1,24 @@
-const path = require(`path`)
-const { createFilePath } = require(`gatsby-source-filesystem`)
+const _ = require('lodash')
+const path = require('path')
+const Promise = require('bluebird')
+const { supportedLanguages } = require('./i18n')
 
 exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions
+  const { createPage, } = actions
 
   return new Promise((resolve, reject) => {
-    const blogPost = path.resolve(`./src/templates/blog-post.js`)
+    const blogPost = path.resolve('./src/templates/blog-post.js')
+    // Create index pages for all supported languages
+    Object.keys(supportedLanguages).forEach(langKey => {
+      createPage({
+        path: langKey === 'en' ? '/' : `/${langKey}/`,
+        component: path.resolve('./src/templates/blog-index.js'),
+        context: {
+          langKey,
+        },
+      })
+    })
+
     resolve(
       graphql(
         `
@@ -18,6 +31,8 @@ exports.createPages = ({ graphql, actions }) => {
                 node {
                   fields {
                     slug
+                    langKey
+                    directoryName
                   }
                   frontmatter {
                     title
@@ -31,15 +46,42 @@ exports.createPages = ({ graphql, actions }) => {
         if (result.errors) {
           console.log(result.errors)
           reject(result.errors)
+          return
         }
 
         // Create blog posts pages.
         const posts = result.data.allMarkdownRemark.edges
 
-        posts.forEach((post, index) => {
+        const translationsByDirectory = _.reduce(
+          posts,
+          (result, post) => {
+            const directoryName = _.get(post, 'node.fields.directoryName')
+            const langKey = _.get(post, 'node.fields.langKey')
+
+            if (directoryName && langKey && langKey !== 'en') {
+              (result[directoryName] || (result[directoryName] = [])).push(
+                langKey
+              )
+            }
+
+            return result
+          },
+          {}
+        )
+
+        const defaultLangPosts = posts.filter(
+          ({ node }) => node.fields.langKey === 'en'
+        )
+        _.each(defaultLangPosts, (post, index) => {
           const previous =
-            index === posts.length - 1 ? null : posts[index + 1].node
-          const next = index === 0 ? null : posts[index - 1].node
+            index === defaultLangPosts.length - 1
+              ? null
+              : defaultLangPosts[index + 1].node
+          const next = index === 0 ? null : defaultLangPosts[index - 1].node
+
+          const translations =
+            translationsByDirectory[_.get(post, 'node.fields.directoryName')] ||
+            []
 
           createPage({
             path: post.node.fields.slug,
@@ -48,7 +90,25 @@ exports.createPages = ({ graphql, actions }) => {
               slug: post.node.fields.slug,
               previous,
               next,
+              translations
             },
+          })
+
+          const otherLangPosts = posts.filter(
+            ({ node }) => node.fields.langKey !== 'en'
+          )
+          _.each(otherLangPosts, post => {
+            const translations =
+              translationsByDirectory[_.get(post, 'node.fields.directoryName')]
+
+            createPage({
+              path: post.node.fields.slug,
+              component: blogPost,
+              context: {
+                slug: post.node.fields.slug,
+                translations,
+              },
+            })
           })
         })
       })
@@ -56,15 +116,14 @@ exports.createPages = ({ graphql, actions }) => {
   })
 }
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
+exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions
 
-  if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
+  if (_.get(node, 'internal.type') === `MarkdownRemark`) {
     createNodeField({
-      name: `slug`,
       node,
-      value,
+      name: 'directoryName',
+      value: path.basename(path.dirname(_.get(node, 'fileAbsolutePath'))),
     })
   }
 }
