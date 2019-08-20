@@ -23,7 +23,7 @@ class Signup extends Component {
 
   onSubmit(event) {
     event.preventDefault()
-    const URL = 'https://iz81y6vlzk.execute-api.eu-west-1.amazonaws.com/dev/subscribe'
+    const URL = 'https://p5psezx8c9.execute-api.eu-west-1.amazonaws.com/prod/subscribe'
 
     axios.post(URL, JSON.stringify({ email: this.state.email }, null))
       .then(res => {
