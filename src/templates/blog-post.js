@@ -172,16 +172,14 @@ class BlogPostTemplate extends React.Component {
           </article>
         </main>
         <aside>
-          {/* TODO: implement newsletter */}
-          
-          {/* <div
+          <div
             style={{
               margin: '80px 0 40px 0',
               fontFamily: systemFont,
             }}
           >
             <Signup />
-          </div> */}
+          </div>
           <hr style={{ marginBottom: rhythm(1) }} />
           <h3
             style={{
@@ -193,7 +191,7 @@ class BlogPostTemplate extends React.Component {
               style={{
                 boxShadow: 'none',
                 textDecoration: 'none',
-                color: 'var(--green)',
+                color: '#62a835',
               }}
               to={'/'}
             >

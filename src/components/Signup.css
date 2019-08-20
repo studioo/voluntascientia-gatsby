@@ -60,7 +60,7 @@
 .formkit-form .formkit-submit:hover > span,
 .formkit-form .formkit-button:focus > span,
 .formkit-form .formkit-submit:focus > span {
-  background-color: hsl(128, 64%, 49%);
+  background-color: hsla(128, 79%, 42%, 0.87);
 }
 .formkit-form .formkit-button > span,
 .formkit-form .formkit-submit > span {
