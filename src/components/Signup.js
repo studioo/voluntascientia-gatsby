@@ -21,16 +21,18 @@ class Signup extends Component {
     })
   }
 
-  onSubmit(event) {
+  async onSubmit(event) {
     event.preventDefault()
     const URL = 'https://p5psezx8c9.execute-api.eu-west-1.amazonaws.com/prod/subscribe'
 
-    axios.post(URL, JSON.stringify({ email: this.state.email }, null))
-      .then(res => {
-        console.log(res)
-        this.setState({ email: '' })
-      })
-      .catch(err => console.log(err))
+    try {
+      const email = JSON.stringify({ email: this.state.email }, null)
+      const response = await axios.post(URL, email)
+      console.log(response)
+      this.setState({ email: '' })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   svg() {
