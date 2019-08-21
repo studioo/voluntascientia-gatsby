@@ -26,7 +26,11 @@ class Form extends Component {
     event.preventDefault();
     try {
       const email = JSON.stringify({ email: this.state.email }, null)
-      const response = await axios.post(this.props.endpoint, email);
+      const response = await axios({
+        method: this.props.method,
+        url: this.props.endpoint,
+        data: email
+      });
       this.setState({ email: '' })
     } catch (error) {
       console.log(error)
@@ -61,8 +65,10 @@ class Form extends Component {
                 <input
                   id="email"
                   type="email"
+                  name="email"
                   className="form__input"
                   placeholder="Your email address"
+                  onChange={this.handleChange}
                 />
               </label>
               <button className="form__button">
