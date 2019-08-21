@@ -93,6 +93,11 @@
   background: #53c049;
 }
 
+.form__button:disabled {
+  cursor: not-allowed;
+  background: #b4b4b4;
+}
+
 .form__info {
   font-size: 12px;
 }

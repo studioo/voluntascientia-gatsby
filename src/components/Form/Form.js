@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { navigate } from 'gatsby';
-import axios from 'axios';
+import { navigate } from 'gatsby'
+import axios from 'axios'
 
 import './style.css'
 
@@ -11,13 +11,15 @@ class Form extends Component {
 
     this.state = {
       email: '',
-      attempts: 0
+      attempts: 0,
+      sending: false
     }
 
     this.input = React.createRef();
 
-    this.onSubmit = this.onSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.onFocus = this.onFocus.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   handleChange(event) {
@@ -26,8 +28,14 @@ class Form extends Component {
     })
   }
 
+  onFocus() {
+    this.setState({ sending: false })
+    this.input.current.style.border = '1px solid #E3E3E3'
+  }
+
   async onSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
+    this.setState({ sending: true })
 
     try {
       const email = JSON.stringify({
@@ -53,8 +61,8 @@ class Form extends Component {
         })
       }
 
-      this.input.current.style.border = '1px solid red';
-      this.setState({ attempts: this.state.attempts + 1 });
+      this.input.current.style.border = '1px solid red'
+      this.setState({ attempts: this.state.attempts + 1 })
     }
   }
 
@@ -65,7 +73,7 @@ class Form extends Component {
       method,
       description,
       buttonTitle
-    } = this.props;
+    } = this.props
 
     return (
       <form
@@ -89,14 +97,14 @@ class Form extends Component {
                   name="email"
                   required={true}
                   ref={this.input}
-                  className="form__input"
+                  onFocus={this.onFocus}
                   value={this.state.email}
                   onChange={this.handleChange}
                   placeholder="Your email address"
-                  onFocus={() => this.input.current.style.border = '1px solid #E3E3E3'}
+                  className="form__input"
                 />
               </label>
-              <button className="form__button">
+              <button className="form__button" disabled={this.state.sending}>
                 {buttonTitle}
               </button>
               <div
