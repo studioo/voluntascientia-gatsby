@@ -48,8 +48,12 @@ class Form extends Component {
         data: email
       })
 
-      this.setState({ email: '' }) // Clear input
-      navigate('/confirm/') // Redirect
+      this.setState({ email: '' })
+      navigate('/confirm/', {
+        state: {
+          prevPage: location.pathname
+        }
+      })
     } catch (error) {
       console.log(error)
 
@@ -84,13 +88,20 @@ class Form extends Component {
         <div className="form__row">
           <div className="form__left">
             <div className={'form__content'}>
-              <h3 className="form__title">{title}</h3>
-              <p className="form__description">{description}</p>
+              <h3 className="form__title">
+                {title}
+              </h3>
+              <p className="form__description">
+                {description}
+              </p>
             </div>
           </div>
           <div className="form__right">
             <div className={'form__content'}>
-              <label className="form__label" htmlFor="email">
+              <label
+                htmlFor="email"
+                className="form__label"
+              >
                 <input
                   id="email"
                   type="email"
@@ -104,7 +115,10 @@ class Form extends Component {
                   className="form__input"
                 />
               </label>
-              <button className="form__button" disabled={this.state.sending}>
+              <button
+                className="form__button"
+                disabled={this.state.sending}
+              >
                 {buttonTitle}
               </button>
               <div

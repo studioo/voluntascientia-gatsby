@@ -11,7 +11,7 @@ export default function Failure(props) {
 
   if(state) {
     if(state.prevPage) {
-      previousPage = prevPage;
+      previousPage = state.prevPage;
     }
   }
 
@@ -20,7 +20,7 @@ export default function Failure(props) {
       <main>
         <h1>Something went wrong...</h1>
         <p>
-          Please try subscribing{' '}
+          Please try{' '}
           {previousPage ? <Link to={previousPage}>again.</Link> : 'again.'}<br />
           Or contact me by email:{' '}
           <a href={'mailto:studioo1533@gmail.com'}>
