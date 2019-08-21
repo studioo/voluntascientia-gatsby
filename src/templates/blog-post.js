@@ -5,9 +5,9 @@ import { Link, graphql } from 'gatsby'
 import '../fonts/fonts-post.css'
 import Bio from '../components/Bio'
 import SEO from '../components/seo'
+import Form from '../components/Form'
 import Panel from '../components/Panel'
 import Layout from '../components/Layout'
-import Signup from '../components/Signup'
 import { rhythm, scale } from '../utils/typography'
 import { formatReadingTime } from '../utils/helpers'
 import {
@@ -178,7 +178,14 @@ class BlogPostTemplate extends React.Component {
               fontFamily: systemFont,
             }}
           >
-            <Signup />
+            <Form
+              method={'post'}
+              buttonTitle={'Subscribe'}
+              title={'Join the Newsletter'}
+              description={'Subscribe to get the latest content by email.'}
+              info={`I won't send you spam.<br /> Unsubscribe at any time.`}
+              endpoint={'https://p5psezx8c9.execute-api.eu-west-1.amazonaws.com/prod/subscribe'}
+            />
           </div>
           <hr style={{ marginBottom: rhythm(1) }} />
           <h3

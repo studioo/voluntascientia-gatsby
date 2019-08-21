@@ -1,68 +1,37 @@
 import React from 'react';
-import Layout from '../components/Layout';
 import get from 'lodash/get';
-import axios from 'axios';
 import { graphql } from 'gatsby';
 
-// TODO: refactor component
-class Unsubscribe extends React.Component {
-  constructor(props) {
-    super(props);
+import Form from '../components/Form';
+import Layout from '../components/Layout';
 
-    this.state = {
-      email: ''
-    }
+export default function Unsubscribe(props) {
+  const siteTitle = get(props, 'data.site.siteMetadata.title');
+  const systemFont = `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif`
 
-    this.onSubmit = this.onSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
-  }
-
-  async onSubmit(event) {
-    event.preventDefault()
-    const URL = 'https://iz81y6vlzk.execute-api.eu-west-1.amazonaws.com/dev/unsubscribe?email=studioo@mail.ru'
-
-    try {
-      const email = JSON.stringify({ email: this.state.email }, null)
-      const response = await axios.delete(URL, email)
-      console.log(response)
-      this.setState({ email: '' })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  render() {
-    const siteTitle = get(this.props, 'data.site.siteMetadata.title');
-    return (
-      <Layout location={this.props.location} title={siteTitle}>
-        <main>
-          <h1>Unsubscribe form</h1>
-          <form
-            method="delete"
-            onSubmit={this.onSubmit}
-          >
-            <input
-              className="formkit-input"
-              name="email"
-              aria-label="Your email address"
-              placeholder="Your email address"
-              value={this.state.email}
-              onChange={this.handleChange}
-              required={true}
-              type="email"
-            />
-            <button>unsubscribe</button>
-          </form>
-        </main>
-      </Layout>
-    );
-  }
+  return (
+    <Layout location={props.location} title={siteTitle}>
+      <main>
+        <div
+          style={{
+            margin: '80px 0 40px 0',
+            fontFamily: systemFont,
+          }}
+        >
+          <Form
+            method={'delete'}
+            buttonTitle={'Unsubscribe'}
+            title={'Unsubscribe from Newsletter'}
+            description={'If you change your mind, sign up again.'}
+            info={`You can send a feedback.<br /><a href="mailto:studioo1533@gmail.com">studioo1533@gmail.com</a>`}
+            endpoint={'https://p5psezx8c9.execute-api.eu-west-1.amazonaws.com/prod/unsubscribe'}
+          />
+        </div>
+      </main>
+    </Layout>
+  )
 }
 
 export const pageQuery = graphql`
@@ -74,5 +43,3 @@ export const pageQuery = graphql`
     }
   }
 `;
-
-export default Unsubscribe;
