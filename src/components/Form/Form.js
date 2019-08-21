@@ -69,6 +69,8 @@ class Form extends Component {
                   className="form__input"
                   placeholder="Your email address"
                   onChange={this.handleChange}
+                  value={this.state.email}
+                  required={true}
                 />
               </label>
               <button className="form__button">
