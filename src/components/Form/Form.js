@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
+import { navigate } from 'gatsby';
 import axios from 'axios';
 
 import './style.css'
 
-// TODO: redirect
+
 class Form extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: ''
+      email: '',
+      attempts: 0
     }
+
+    this.input = React.createRef();
 
     this.onSubmit = this.onSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -24,16 +28,33 @@ class Form extends Component {
 
   async onSubmit(event) {
     event.preventDefault();
+
     try {
-      const email = JSON.stringify({ email: this.state.email }, null)
+      const email = JSON.stringify({
+        email: this.state.email
+      }, null)
+
       const response = await axios({
         method: this.props.method,
         url: this.props.endpoint,
         data: email
-      });
-      this.setState({ email: '' })
+      })
+
+      this.setState({ email: '' }) // Clear input
+      navigate('/confirm/') // Redirect
     } catch (error) {
       console.log(error)
+
+      if (this.state.attempts >= 2) {
+        navigate('/failure/', {
+          state: {
+            prevPage: location.pathname
+          }
+        })
+      }
+
+      this.input.current.style.border = '1px solid red';
+      this.setState({ attempts: this.state.attempts + 1 });
     }
   }
 
@@ -66,11 +87,13 @@ class Form extends Component {
                   id="email"
                   type="email"
                   name="email"
-                  className="form__input"
-                  placeholder="Your email address"
-                  onChange={this.handleChange}
-                  value={this.state.email}
                   required={true}
+                  ref={this.input}
+                  className="form__input"
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                  placeholder="Your email address"
+                  onFocus={() => this.input.current.style.border = '1px solid #E3E3E3'}
                 />
               </label>
               <button className="form__button">

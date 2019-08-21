@@ -3,7 +3,7 @@ import React from 'react'
 import { rhythm } from '../utils/typography'
 import voluntaimage from '../assets/gatsby-icon.png'
 
-function Bio() {
+export default function Bio() {
   return (
     <div
       style={{
@@ -23,11 +23,11 @@ function Bio() {
         }}
       />
       <p>
-        This blog is about things I'm interested in.<br />
-        {" "}<a href="https://github.com/studioo/voluntascientia-gatsby" target="__blank">Voluntascientia on Github</a>
+        This blog is about things I'm interested in.<br />{' '}
+        <a href="https://github.com/studioo/voluntascientia-gatsby" target="__blank">
+          Voluntascientia on Github
+        </a>
       </p>
     </div>
   )
 }
-
-export default Bio

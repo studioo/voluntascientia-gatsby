@@ -1,26 +1,35 @@
-import React, { Component } from 'react';
-import Layout from '../components/Layout';
+import React from 'react';
 import get from 'lodash/get';
-import { graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 
-class Failure extends Component {
-  render() {
-    const siteTitle = get(this.props, 'data.site.siteMetadata.title');
-    return (
-      <Layout location={this.props.location} title={siteTitle}>
-        <main>
-          <h1>Something went wrong...</h1>
-          <p>
-            Please try subscribing again.<br />
-            Or contact me by email:{' '}
-            <a href={'mailto:studioo1533@gmail.com'}>
-              studioo1533@gmail.com
-            </a>
-          </p>
-        </main>
-      </Layout>
-    );
+import Layout from '../components/Layout';
+
+export default function Failure(props) {
+  const siteTitle = get(props, 'data.site.siteMetadata.title');
+  const { state } = props.location;
+  let previousPage;
+
+  if(state) {
+    if(state.prevPage) {
+      previousPage = prevPage;
+    }
   }
+
+  return (
+    <Layout location={props.location} title={siteTitle}>
+      <main>
+        <h1>Something went wrong...</h1>
+        <p>
+          Please try subscribing{' '}
+          {previousPage ? <Link to={previousPage}>again.</Link> : 'again.'}<br />
+          Or contact me by email:{' '}
+          <a href={'mailto:studioo1533@gmail.com'}>
+            studioo1533@gmail.com
+          </a>
+        </p>
+      </main>
+    </Layout>
+  );
 }
 
 export const pageQuery = graphql`
@@ -32,5 +41,3 @@ export const pageQuery = graphql`
     }
   }
 `;
-
-export default Failure;

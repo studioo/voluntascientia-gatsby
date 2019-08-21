@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Panel({ children, style = {} }) {
+export default function Panel({ children, style = {} }) {
   return (
     <p
       style={{
@@ -17,5 +17,3 @@ function Panel({ children, style = {} }) {
     </p>
   )
 }
-
-export default Panel
