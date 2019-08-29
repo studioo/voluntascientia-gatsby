@@ -29,6 +29,11 @@
   width: 80%;
 }
 
+.form__error {
+  font-size: 12px;
+  color: red;
+}
+
 .form__title, .form__description {
   margin: 0;
   padding: 0;

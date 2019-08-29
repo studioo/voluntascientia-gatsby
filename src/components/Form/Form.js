@@ -12,7 +12,8 @@ class Form extends Component {
     this.state = {
       email: '',
       attempts: 0,
-      sending: false
+      sending: false,
+      errorMsg: ''
     }
 
     this.input = React.createRef();
@@ -29,14 +30,19 @@ class Form extends Component {
   }
 
   onFocus() {
-    this.setState({ sending: false })
     this.input.current.style.border = '1px solid #E3E3E3'
+    this.setState({ errorMsg: '' });
   }
 
   async onSubmit(event) {
     event.preventDefault()
+    
+    // Disable button at 1.5 sec
     this.setState({ sending: true })
-
+    setTimeout(() => this.setState({
+      sending: false
+    }), 1500);
+    
     try {
       const email = JSON.stringify({
         email: this.state.email
@@ -48,7 +54,11 @@ class Form extends Component {
         data: email
       })
 
-      this.setState({ email: '' })
+      this.setState({
+        email: '',
+        errorMsg: ''
+      })
+
       navigate('/confirm/', {
         state: {
           prevPage: location.pathname
@@ -66,7 +76,10 @@ class Form extends Component {
       }
 
       this.input.current.style.border = '1px solid red'
-      this.setState({ attempts: this.state.attempts + 1 })
+      this.setState({
+        attempts: this.state.attempts + 1,
+        errorMsg: 'Something went wrong, please try again!'
+      })
     }
   }
 
@@ -93,6 +106,9 @@ class Form extends Component {
               </h3>
               <p className="form__description">
                 {description}
+              </p>
+              <p className={'form__error'}>
+                {this.state.errorMsg}
               </p>
             </div>
           </div>
