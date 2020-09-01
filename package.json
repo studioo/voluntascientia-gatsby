@@ -1,6 +1,6 @@
 {
   "name": "voluntascientia-gatsby",
-  "private": true,
+  "private": false,
   "description": "Voluntascientia Blog",
   "version": "0.0.1",
   "author": "Nick K <studioo1533@gmail.com>",
