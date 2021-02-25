@@ -5,7 +5,7 @@ os:
   - osx
 
 node_js:
-  - 14
+  - 12
 
 script:
   - yarn install
